@@ -54,15 +54,15 @@
             // player
             // 
             this.player.Enabled = true;
-            this.player.Location = new System.Drawing.Point(3, 12);
+            this.player.Location = new System.Drawing.Point(20, 40);
             this.player.Name = "player";
             this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
-            this.player.Size = new System.Drawing.Size(541, 304);
+            this.player.Size = new System.Drawing.Size(536, 313);
             this.player.TabIndex = 0;
             // 
             // openBtn
             // 
-            this.openBtn.Location = new System.Drawing.Point(577, 28);
+            this.openBtn.Location = new System.Drawing.Point(577, 33);
             this.openBtn.Name = "openBtn";
             this.openBtn.Size = new System.Drawing.Size(75, 23);
             this.openBtn.TabIndex = 1;
@@ -72,7 +72,7 @@
             // 
             // playBtn
             // 
-            this.playBtn.Location = new System.Drawing.Point(577, 71);
+            this.playBtn.Location = new System.Drawing.Point(577, 76);
             this.playBtn.Name = "playBtn";
             this.playBtn.Size = new System.Drawing.Size(75, 23);
             this.playBtn.TabIndex = 1;
@@ -84,10 +84,10 @@
             // 
             this.processBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.processBar.Location = new System.Drawing.Point(3, 339);
+            this.processBar.Location = new System.Drawing.Point(20, 431);
             this.processBar.Maximum = 1000;
             this.processBar.Name = "processBar";
-            this.processBar.Size = new System.Drawing.Size(536, 45);
+            this.processBar.Size = new System.Drawing.Size(458, 45);
             this.processBar.TabIndex = 2;
             this.processBar.TabStop = false;
             this.processBar.Scroll += new System.EventHandler(this.processBar_Scroll);
@@ -95,7 +95,7 @@
             // 
             // stopBtn
             // 
-            this.stopBtn.Location = new System.Drawing.Point(577, 115);
+            this.stopBtn.Location = new System.Drawing.Point(577, 120);
             this.stopBtn.Name = "stopBtn";
             this.stopBtn.Size = new System.Drawing.Size(75, 23);
             this.stopBtn.TabIndex = 1;
@@ -106,7 +106,7 @@
             // timeLbl
             // 
             this.timeLbl.AutoSize = true;
-            this.timeLbl.Location = new System.Drawing.Point(490, 353);
+            this.timeLbl.Location = new System.Drawing.Point(529, 448);
             this.timeLbl.Name = "timeLbl";
             this.timeLbl.Size = new System.Drawing.Size(71, 12);
             this.timeLbl.TabIndex = 3;
@@ -114,7 +114,7 @@
             // 
             // mirrorBtn
             // 
-            this.mirrorBtn.Location = new System.Drawing.Point(577, 160);
+            this.mirrorBtn.Location = new System.Drawing.Point(577, 165);
             this.mirrorBtn.Name = "mirrorBtn";
             this.mirrorBtn.Size = new System.Drawing.Size(75, 23);
             this.mirrorBtn.TabIndex = 4;
@@ -124,7 +124,7 @@
             // 
             // snapshot
             // 
-            this.snapshot.Location = new System.Drawing.Point(577, 206);
+            this.snapshot.Location = new System.Drawing.Point(577, 211);
             this.snapshot.Name = "snapshot";
             this.snapshot.Size = new System.Drawing.Size(75, 23);
             this.snapshot.TabIndex = 4;
@@ -134,7 +134,7 @@
             // 
             // rotateL90
             // 
-            this.rotateL90.Location = new System.Drawing.Point(684, 57);
+            this.rotateL90.Location = new System.Drawing.Point(684, 91);
             this.rotateL90.Name = "rotateL90";
             this.rotateL90.Size = new System.Drawing.Size(75, 23);
             this.rotateL90.TabIndex = 4;
@@ -144,7 +144,7 @@
             // 
             // gifShot
             // 
-            this.gifShot.Location = new System.Drawing.Point(577, 250);
+            this.gifShot.Location = new System.Drawing.Point(577, 255);
             this.gifShot.Name = "gifShot";
             this.gifShot.Size = new System.Drawing.Size(75, 23);
             this.gifShot.TabIndex = 4;
@@ -155,7 +155,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(281, 387);
+            this.label1.Location = new System.Drawing.Point(529, 422);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 12);
             this.label1.TabIndex = 5;
@@ -163,7 +163,7 @@
             // 
             // speedBar
             // 
-            this.speedBar.Location = new System.Drawing.Point(364, 376);
+            this.speedBar.Location = new System.Drawing.Point(644, 441);
             this.speedBar.Maximum = 20;
             this.speedBar.Name = "speedBar";
             this.speedBar.Size = new System.Drawing.Size(104, 45);
@@ -176,7 +176,7 @@
             // 
             // rotateR90
             // 
-            this.rotateR90.Location = new System.Drawing.Point(684, 28);
+            this.rotateR90.Location = new System.Drawing.Point(684, 33);
             this.rotateR90.Name = "rotateR90";
             this.rotateR90.Size = new System.Drawing.Size(75, 23);
             this.rotateR90.TabIndex = 4;
@@ -186,7 +186,7 @@
             // 
             // rotate180
             // 
-            this.rotate180.Location = new System.Drawing.Point(684, 86);
+            this.rotate180.Location = new System.Drawing.Point(684, 120);
             this.rotate180.Name = "rotate180";
             this.rotate180.Size = new System.Drawing.Size(75, 23);
             this.rotate180.TabIndex = 4;
@@ -196,7 +196,7 @@
             // 
             // rotateNormal
             // 
-            this.rotateNormal.Location = new System.Drawing.Point(684, 115);
+            this.rotateNormal.Location = new System.Drawing.Point(684, 165);
             this.rotateNormal.Name = "rotateNormal";
             this.rotateNormal.Size = new System.Drawing.Size(75, 23);
             this.rotateNormal.TabIndex = 4;
@@ -206,7 +206,7 @@
             // 
             // gifShotEnd
             // 
-            this.gifShotEnd.Location = new System.Drawing.Point(658, 250);
+            this.gifShotEnd.Location = new System.Drawing.Point(577, 341);
             this.gifShotEnd.Name = "gifShotEnd";
             this.gifShotEnd.Size = new System.Drawing.Size(75, 23);
             this.gifShotEnd.TabIndex = 4;
@@ -216,7 +216,7 @@
             // 
             // videoCut
             // 
-            this.videoCut.Location = new System.Drawing.Point(577, 293);
+            this.videoCut.Location = new System.Drawing.Point(577, 298);
             this.videoCut.Name = "videoCut";
             this.videoCut.Size = new System.Drawing.Size(75, 23);
             this.videoCut.TabIndex = 4;
@@ -228,7 +228,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(864, 417);
+            this.ClientSize = new System.Drawing.Size(786, 493);
             this.Controls.Add(this.speedBar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.rotateNormal);

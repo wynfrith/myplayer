@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace myplayer
 {
-    public partial class PlayerForm : Form
+    public partial class PlayerForm :DMSkin.Main
     {
         public System.Windows.Forms.Timer timer;
         public System.Windows.Forms.Timer backTimer;
