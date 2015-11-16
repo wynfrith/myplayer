@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PlayerForm));
-            DMPlay.Item item2 = new DMPlay.Item();
+            DMPlay.Item item1 = new DMPlay.Item();
             this.metroContextMenu2 = new DMSkin.Metro.Controls.MetroContextMenu(this.components);
             this.打开文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开文件夹ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,6 +82,9 @@
             this.bLbl = new System.Windows.Forms.Label();
             this.ALbl = new System.Windows.Forms.Label();
             this.posLbl = new System.Windows.Forms.Label();
+            this.speed01 = new System.Windows.Forms.Label();
+            this.speed02 = new System.Windows.Forms.Label();
+            this.speed03 = new System.Windows.Forms.Label();
             this.speedLbl = new System.Windows.Forms.Label();
             this.dmLabel1 = new DMSkin.Controls.DMLabel();
             this.topPanel = new System.Windows.Forms.Panel();
@@ -98,7 +101,6 @@
             this.rightPanel = new System.Windows.Forms.Panel();
             this.listTitleLbl = new System.Windows.Forms.Label();
             this.playListGrid = new DMPlay.DMControl();
-            this.button1 = new System.Windows.Forms.Button();
             this.metroContextMenu2.SuspendLayout();
             this.metroContextMenu1.SuspendLayout();
             this.menuPanel.SuspendLayout();
@@ -246,7 +248,7 @@
             // dmVolumeProgress
             // 
             this.dmVolumeProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.dmVolumeProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(99)))));
+            this.dmVolumeProgress.BackColor = System.Drawing.Color.LightCoral;
             this.dmVolumeProgress.DM_BackColor = System.Drawing.Color.Silver;
             this.dmVolumeProgress.DM_BlockColor = System.Drawing.Color.White;
             this.dmVolumeProgress.DM_BufferColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -290,10 +292,10 @@
             // 
             this.dmProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dmProgressBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(99)))));
+            this.dmProgressBar.BackColor = System.Drawing.Color.LightCoral;
             this.dmProgressBar.Cursor = System.Windows.Forms.Cursors.Hand;
             this.dmProgressBar.DM_BackColor = System.Drawing.Color.Gainsboro;
-            this.dmProgressBar.DM_BlockColor = System.Drawing.Color.Khaki;
+            this.dmProgressBar.DM_BlockColor = System.Drawing.Color.LightPink;
             this.dmProgressBar.DM_BufferColor = System.Drawing.Color.Empty;
             this.dmProgressBar.DM_BufferValue = 0D;
             this.dmProgressBar.DM_DrawRound = true;
@@ -405,22 +407,22 @@
             // 设置A点ctrl1ToolStripMenuItem
             // 
             this.设置A点ctrl1ToolStripMenuItem.Name = "设置A点ctrl1ToolStripMenuItem";
-            this.设置A点ctrl1ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.设置A点ctrl1ToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.设置A点ctrl1ToolStripMenuItem.Text = "设置A点(ctrl+1)";
             this.设置A点ctrl1ToolStripMenuItem.Click += new System.EventHandler(this.设置A点ctrl1ToolStripMenuItem_Click);
             // 
             // 设置B点ctrl2ToolStripMenuItem
             // 
             this.设置B点ctrl2ToolStripMenuItem.Name = "设置B点ctrl2ToolStripMenuItem";
-            this.设置B点ctrl2ToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.设置B点ctrl2ToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.设置B点ctrl2ToolStripMenuItem.Text = "设置B点(ctrl+2)";
             this.设置B点ctrl2ToolStripMenuItem.Click += new System.EventHandler(this.设置B点ctrl2ToolStripMenuItem_Click);
             // 
             // 取消循环ctrlcToolStripMenuItem
             // 
             this.取消循环ctrlcToolStripMenuItem.Name = "取消循环ctrlcToolStripMenuItem";
-            this.取消循环ctrlcToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.取消循环ctrlcToolStripMenuItem.Text = "取消循环(ctrl+c)";
+            this.取消循环ctrlcToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.取消循环ctrlcToolStripMenuItem.Text = "取消循环(ctrl+3)";
             this.取消循环ctrlcToolStripMenuItem.Click += new System.EventHandler(this.取消循环ctrlcToolStripMenuItem_Click);
             // 
             // 播放速度ToolStripMenuItem
@@ -556,12 +558,14 @@
             // 
             // menuPanel
             // 
-            this.menuPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(99)))));
-            this.menuPanel.Controls.Add(this.button1);
+            this.menuPanel.BackColor = System.Drawing.Color.LightCoral;
             this.menuPanel.Controls.Add(this.mirrorPanel);
             this.menuPanel.Controls.Add(this.bLbl);
             this.menuPanel.Controls.Add(this.ALbl);
             this.menuPanel.Controls.Add(this.posLbl);
+            this.menuPanel.Controls.Add(this.speed01);
+            this.menuPanel.Controls.Add(this.speed02);
+            this.menuPanel.Controls.Add(this.speed03);
             this.menuPanel.Controls.Add(this.speedLbl);
             this.menuPanel.Controls.Add(this.dmProgressBar);
             this.menuPanel.Controls.Add(this.listShowOrHide);
@@ -578,13 +582,14 @@
             this.menuPanel.Name = "menuPanel";
             this.menuPanel.Size = new System.Drawing.Size(684, 78);
             this.menuPanel.TabIndex = 35;
+            this.menuPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.menuPanel_Paint);
             this.menuPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.canMove_Panel_MouseDown);
             this.menuPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.canMove_Panel_MouseMove);
             // 
             // mirrorPanel
             // 
             this.mirrorPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.mirrorPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(99)))));
+            this.mirrorPanel.BackColor = System.Drawing.Color.LightCoral;
             this.mirrorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.mirrorPanel.Controls.Add(this.mBtn3);
             this.mirrorPanel.Controls.Add(this.mBtn2);
@@ -600,7 +605,7 @@
             // mBtn3
             // 
             this.mBtn3.BackColor = System.Drawing.Color.PapayaWhip;
-            this.mBtn3.ForeColor = System.Drawing.Color.DimGray;
+            this.mBtn3.ForeColor = System.Drawing.Color.DarkGray;
             this.mBtn3.Location = new System.Drawing.Point(89, 1);
             this.mBtn3.Name = "mBtn3";
             this.mBtn3.Size = new System.Drawing.Size(43, 28);
@@ -627,7 +632,7 @@
             // 
             this.mBtn1.BackColor = System.Drawing.Color.PapayaWhip;
             this.mBtn1.CausesValidation = false;
-            this.mBtn1.ForeColor = System.Drawing.Color.DimGray;
+            this.mBtn1.ForeColor = System.Drawing.Color.DarkGray;
             this.mBtn1.Location = new System.Drawing.Point(2, 1);
             this.mBtn1.Name = "mBtn1";
             this.mBtn1.Size = new System.Drawing.Size(43, 28);
@@ -675,14 +680,63 @@
             this.posLbl.TabIndex = 32;
             this.posLbl.Text = "00:00 / 00:00";
             // 
+            // speed01
+            // 
+            this.speed01.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.speed01.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.speed01.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.speed01.ForeColor = System.Drawing.Color.LightPink;
+            this.speed01.Location = new System.Drawing.Point(312, 42);
+            this.speed01.Name = "speed01";
+            this.speed01.Size = new System.Drawing.Size(28, 21);
+            this.speed01.TabIndex = 31;
+            this.speed01.Text = "0.1";
+            this.speed01.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.speed01.Visible = false;
+            this.speed01.Click += new System.EventHandler(this.倍ToolStripMenuItem_Click);
+            this.speed01.MouseEnter += new System.EventHandler(this.speedLbl_MouseEnter);
+            // 
+            // speed02
+            // 
+            this.speed02.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.speed02.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.speed02.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.speed02.ForeColor = System.Drawing.Color.LightPink;
+            this.speed02.Location = new System.Drawing.Point(349, 42);
+            this.speed02.Name = "speed02";
+            this.speed02.Size = new System.Drawing.Size(30, 21);
+            this.speed02.TabIndex = 31;
+            this.speed02.Text = "0.2";
+            this.speed02.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.speed02.Visible = false;
+            this.speed02.Click += new System.EventHandler(this.倍ToolStripMenuItem02_Click);
+            this.speed02.MouseEnter += new System.EventHandler(this.speedLbl_MouseEnter);
+            // 
+            // speed03
+            // 
+            this.speed03.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.speed03.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.speed03.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.speed03.ForeColor = System.Drawing.Color.LightPink;
+            this.speed03.Location = new System.Drawing.Point(388, 41);
+            this.speed03.Name = "speed03";
+            this.speed03.Size = new System.Drawing.Size(29, 22);
+            this.speed03.TabIndex = 31;
+            this.speed03.Text = "0.5";
+            this.speed03.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.speed03.Visible = false;
+            this.speed03.Click += new System.EventHandler(this.倍ToolStripMenuItem1_Click);
+            this.speed03.MouseEnter += new System.EventHandler(this.speedLbl_MouseEnter);
+            // 
             // speedLbl
             // 
             this.speedLbl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.speedLbl.Cursor = System.Windows.Forms.Cursors.Hand;
             this.speedLbl.Font = new System.Drawing.Font("宋体", 9F);
             this.speedLbl.ForeColor = System.Drawing.Color.White;
-            this.speedLbl.Location = new System.Drawing.Point(427, 45);
+            this.speedLbl.Location = new System.Drawing.Point(421, 39);
             this.speedLbl.Name = "speedLbl";
-            this.speedLbl.Size = new System.Drawing.Size(50, 14);
+            this.speedLbl.Size = new System.Drawing.Size(50, 27);
             this.speedLbl.TabIndex = 31;
             this.speedLbl.Text = "常速";
             this.speedLbl.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -710,7 +764,7 @@
             // 
             // topPanel
             // 
-            this.topPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(99)))));
+            this.topPanel.BackColor = System.Drawing.Color.LightCoral;
             this.topPanel.Controls.Add(this.titleLbl);
             this.topPanel.Controls.Add(this.settingBtn);
             this.topPanel.Controls.Add(this.minBtn);
@@ -814,6 +868,7 @@
             this.player.Size = new System.Drawing.Size(242, 332);
             this.player.TabIndex = 0;
             this.player.OnMessage += new AxAPlayer3Lib._IPlayerEvents_OnMessageEventHandler(this.player_OnMessage);
+            this.player.OnEvent += new AxAPlayer3Lib._IPlayerEvents_OnEventEventHandler(this.player_OnEvent);
             this.player.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.player_PreviewKeyDown);
             // 
             // vicePanel
@@ -868,20 +923,20 @@
             this.playListGrid.ForeColor = System.Drawing.SystemColors.Control;
             this.playListGrid.ItemColor = System.Drawing.Color.CornflowerBlue;
             this.playListGrid.ItemMouseOnColor = System.Drawing.Color.Empty;
-            item2.Bounds = new System.Drawing.Rectangle(0, 0, 20, 20);
-            item2.Font = new System.Drawing.Font("微软雅黑", 9F);
-            item2.ForeColor = System.Drawing.Color.Black;
-            item2.Height = 20;
-            item2.Image = null;
-            item2.Index = null;
-            item2.MouseBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            item2.OnLine = false;
-            item2.OwnerChatListBox = this.playListGrid;
-            item2.Text = "你好啊你好啊动力科技反垃圾";
-            item2.Url = null;
-            item2.Width = 20;
+            item1.Bounds = new System.Drawing.Rectangle(0, 0, 20, 20);
+            item1.Font = new System.Drawing.Font("微软雅黑", 9F);
+            item1.ForeColor = System.Drawing.Color.Black;
+            item1.Height = 20;
+            item1.Image = null;
+            item1.Index = null;
+            item1.MouseBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            item1.OnLine = false;
+            item1.OwnerChatListBox = this.playListGrid;
+            item1.Text = "你好啊你好啊动力科技反垃圾";
+            item1.Url = null;
+            item1.Width = 20;
             this.playListGrid.Items.AddRange(new DMSkin.Controls.DMControlItem[] {
-            item2});
+            item1});
             this.playListGrid.Location = new System.Drawing.Point(1, 32);
             this.playListGrid.Name = "playListGrid";
             this.playListGrid.ScrollArrowBackColor = System.Drawing.Color.Transparent;
@@ -901,20 +956,11 @@
             this.playListGrid.Click += new System.EventHandler(this.playListGrid_Click);
             this.playListGrid.MouseClick += new System.Windows.Forms.MouseEventHandler(this.playListGrid_MouseClick);
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(313, 40);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 38;
-            this.button1.Text = "gif";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
             // PlayerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(191)))), ((int)(((byte)(99)))));
+            this.BackColor = System.Drawing.Color.LightCoral;
             this.CanResize = true;
             this.ClientSize = new System.Drawing.Size(690, 454);
             this.Controls.Add(this.panel2);
@@ -927,6 +973,7 @@
             this.Name = "PlayerForm";
             this.Opacity = 0.2D;
             this.Padding = new System.Windows.Forms.Padding(3);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PlayerForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlayerForm_KeyDown);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PlayerForm_KeyPress);
@@ -1018,7 +1065,9 @@
         private System.Windows.Forms.Button mBtn1;
         private System.Windows.Forms.Button mBtn3;
         private System.Windows.Forms.Button mBtn2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label speed03;
+        private System.Windows.Forms.Label speed01;
+        private System.Windows.Forms.Label speed02;
     }
 }
 

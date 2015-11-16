@@ -25,7 +25,7 @@ namespace myplayer
             this.player = player;
         }
 
-        SolidBrush sb = new SolidBrush(Color.FromArgb(32, 191, 99));
+        SolidBrush sb = new SolidBrush(Color.LightCoral);
         protected override void OnPaint(PaintEventArgs e)
         {
             //设置高质量插值法
@@ -62,6 +62,7 @@ namespace myplayer
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 this.dirBox.Text = dialog.SelectedPath;
+                Settings.Default.picDir = dialog.SelectedPath;
             }
         }
 

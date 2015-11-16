@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{D356875A-07F0-4A7B-9C18-7BC82BD77E39}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>myplayer</RootNamespace>
     <AssemblyName>myplayer</AssemblyName>
@@ -52,9 +52,7 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
-  <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
     <ApplicationIcon>playericon.ico</ApplicationIcon>
   </PropertyGroup>
@@ -75,6 +73,9 @@
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DMSkin, Version=0.3.0.5, Culture=neutral, processorArchitecture=MSIL">
@@ -118,14 +119,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmFullscreen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmFullscreen.Designer.cs">
-      <DependentUpon>FrmFullscreen.cs</DependentUpon>
-    </Compile>
     <Compile Include="helpers\ClearTip.cs" />
     <Compile Include="helpers\Constant.cs" />
+    <Compile Include="helpers\Others.cs" />
     <Compile Include="helpers\PlayHelper.cs" />
     <Compile Include="model\VideoItem.cs" />
     <Compile Include="Program.cs" />
@@ -151,9 +147,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmFullscreen.resx">
-      <DependentUpon>FrmFullscreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
