@@ -425,14 +425,18 @@ namespace myplayer
             if (this.Full)
             {
                 base.WindowState = FormWindowState.Normal;
+                this.masterPanel.Height= this.Nor.Height;
+                Console.WriteLine(this.masterPanel);
                 this.player.Parent = this.masterPanel;
                 this.player.Dock = DockStyle.Fill;
-                this.vicePlayer.Dock = DockStyle.Fill;
+                Console.WriteLine(this.playerPanel.Height);
+                Console.WriteLine(this.panel2.Height);
+               
+                
                 this.player.BringToFront();
-                this.player.Location = this.Nor.Location;
-                this.player.Size = this.Nor.Size;
                 if (twoPlay)
                 {
+                    this.vicePlayer.Dock = DockStyle.Fill;
                     this.vicePlayer.Parent = this.vicePanel;
                     this.vicePlayer.Location = this.nor2.Location;
                     this.vicePlayer.Size = this.nor2.Size;
@@ -639,6 +643,11 @@ namespace myplayer
             label.DM_Color = Color.White;
         }
 
+        /// <summary>
+        /// 面板顶部双击铺满屏幕
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void topPanel_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             if (this.isMaxSize)
@@ -667,6 +676,11 @@ namespace myplayer
             }
         }
 
+        /// <summary>
+        /// 快捷键控制
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void player_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             Console.WriteLine((int)e.KeyData);
@@ -770,6 +784,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// 打开文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 打开文件ToolStripMenuItem_Click(object sender, EventArgs e)
         {
            OpenAndPlay();
@@ -808,6 +827,11 @@ namespace myplayer
             Btnplay.DM_Key = DMSkin.Controls.DMLabelKey.暂停;
         }
 
+        /// <summary>
+        /// 打开文件夹
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 打开文件夹ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
@@ -844,6 +868,11 @@ namespace myplayer
             }
         }
 
+        /// <summary>
+        /// 点击当前播放列表的视频, 并切换到该视频
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void playListGrid_ItemClick(object sender, EventArgs e)
         {
             Console.WriteLine("click");
@@ -870,6 +899,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// 右键删除当前视频
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 删除当前项ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach (var item in this.videoList)
@@ -890,6 +924,11 @@ namespace myplayer
             this.player.Focus();
         }
 
+        /// <summary>
+        /// 清空播放列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 清空列表ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.videoList = new List<VideoItem>();
@@ -977,6 +1016,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// 显示快捷速度选项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void speedLbl_Click(object sender, EventArgs e)
         {
             if (speed01.Visible)
@@ -1057,7 +1101,11 @@ namespace myplayer
         }
 
         System.Windows.Forms.Timer mirrorTimer = new System.Windows.Forms.Timer();
-        
+        /// <summary>
+        /// 显示播放镜面选项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void mirrorBtn_Click(object sender, EventArgs e)
         {
             this.mirrorPanel.Visible = true;
@@ -1073,6 +1121,12 @@ namespace myplayer
             mirrorTimer.Enabled= false;
         }
 
+
+        /// <summary>
+        /// 单张截图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 截图altsToolStripMenuItem_Click(object sender, EventArgs e)
         {
                 if (this.player.GetConfig(701) == "1")
@@ -1090,6 +1144,11 @@ namespace myplayer
                 }
         }
 
+        /// <summary>
+        /// 连续多张截图, 打开新窗口
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 连续截图altwToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (snapForm == null || snapForm.IsDisposed)
@@ -1155,6 +1214,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// AB循环设置A点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 设置A点ctrl1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var BarX = this.dmProgressBar.Location.X;
@@ -1199,6 +1263,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// 设置B点
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 设置B点ctrl2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var BarX = this.dmProgressBar.Location.X;
@@ -1247,6 +1316,12 @@ namespace myplayer
             Console.WriteLine("paint");
         }
 
+
+        /// <summary>
+        /// 避免在窗口放大过程中AB点跑偏, 手动重绘
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dmProgressBar_SizeChanged(object sender, EventArgs e)
         {
             Console.WriteLine("size");
@@ -1267,6 +1342,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// 音量+10
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 音量ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.volume = ((this.volume + 10) > 100) ? 100 : (this.volume + 10);
@@ -1277,6 +1357,11 @@ namespace myplayer
             UpdateVol();
         }
 
+        /// <summary>
+        /// 音量 -10
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 音量ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             this.volume = ((this.volume - 10) < 0) ? 0 : (this.volume - 10);
@@ -1287,6 +1372,12 @@ namespace myplayer
             UpdateVol();
         }
 
+
+        /// <summary>
+        /// 快退5
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 快退5秒ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.timer.Stop();
@@ -1330,6 +1421,11 @@ namespace myplayer
             this.player.Focus();
         }
 
+        /// <summary>
+        /// 快进5s
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 快进5秒ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.timer.Stop();
@@ -1378,6 +1474,12 @@ namespace myplayer
 
         }
 
+
+        /// <summary>
+        /// 还原常速
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void 常速ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //还原常速
@@ -1588,6 +1690,11 @@ namespace myplayer
 
        
         private System.Windows.Forms.Timer twoPlayTimer = new System.Windows.Forms.Timer();
+        /// <summary>
+        /// 实现分镜
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click_2(object sender, EventArgs e)
         {
             Console.WriteLine(this.position);
@@ -1634,15 +1741,6 @@ namespace myplayer
                 Console.WriteLine("ok");
             }
         }
-        public void updatetxt()
-        {
-
-        }
-
-        public void SetPlay()
-        {
-            this.vicePlayer.Play();
-        }
 
         private void playerPanel_Resize(object sender, EventArgs e)
         {
@@ -1651,7 +1749,6 @@ namespace myplayer
                 this.vicePanel.Width = (int)(this.playerPanel.Width * 0.5);
             }
         }
-
 
         private void CloseTwoPlay()
         {
@@ -1727,6 +1824,11 @@ namespace myplayer
 
         }
 
+        /// <summary>
+        /// gif截图(未实现)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click_3(object sender, EventArgs e)
         {
             this.player.SetConfig(707, "4");
@@ -1744,18 +1846,15 @@ namespace myplayer
             Console.WriteLine(e);
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            var isWorking = this.player.GetConfig(711);
-            Console.WriteLine("是否截图:" + isWorking);
-            Console.WriteLine("百分比" + this.player.GetConfig(712));
-        }
 
         private void menuPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }
-
+        /// <summary>
+        /// 委托调用方法
+        /// </summary>
+        /// <param name="method"></param>
         private void DeterMineCall(MethodInvoker method)
         {
             if (InvokeRequired)
@@ -1763,10 +1862,12 @@ namespace myplayer
             else
                 method();
         }
-       
-   
 
-
+        /// <summary>
+        /// 关闭程序前的工作
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Settings.Default.volume = this.volume;
@@ -1777,5 +1878,6 @@ namespace myplayer
             }
 
         }
+
     }
 }
