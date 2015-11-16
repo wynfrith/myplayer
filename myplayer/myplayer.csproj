@@ -52,16 +52,35 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationIcon>playericon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSkin">
-      <HintPath>..\..\..\..\Desktop\CSkin 15.3.10.1\CSkin 4.0\CSkin.dll</HintPath>
-    </Reference>
-    <Reference Include="DMSkin">
-      <HintPath>..\..\..\..\Desktop\DMSkin-B306\DMSkin.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="DMSkin, Version=0.3.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Downloads\DMSkin-B305\55\DMSkin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -100,7 +119,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="helpers\ClearTip.cs" />
     <Compile Include="helpers\Constant.cs" />
+    <Compile Include="helpers\Others.cs" />
     <Compile Include="helpers\PlayHelper.cs" />
     <Compile Include="model\VideoItem.cs" />
     <Compile Include="Program.cs" />
@@ -111,6 +132,12 @@
     </Compile>
     <Compile Include="SettingForm.Designer.cs">
       <DependentUpon>SettingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Snapshot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Snapshot.Designer.cs">
+      <DependentUpon>Snapshot.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="DMControl\DirectUI\DirectUIBase.resx">
       <DependentUpon>DirectUIBase.cs</DependentUpon>
@@ -133,6 +160,10 @@
     <EmbeddedResource Include="SettingForm.resx">
       <DependentUpon>SettingForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Snapshot.resx">
+      <DependentUpon>Snapshot.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -143,6 +174,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="TODO.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="myplayer.ico" />
+    <Content Include="playericon.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="APlayer3Lib">
@@ -161,6 +196,15 @@
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
       <Isolated>True</Isolated>
+    </COMReference>
+    <COMReference Include="stdole">
+      <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

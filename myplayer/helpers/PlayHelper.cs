@@ -1,7 +1,9 @@
 ﻿using myplayer.model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 
 namespace myplayer.helpers
@@ -32,6 +34,29 @@ namespace myplayer.helpers
                 str = ((num2 < 10) ? ("0" + num2.ToString()) : num2.ToString()) + ":" + ((num3 < 10) ? ("0" + num3.ToString()) : num3.ToString());
             }
             return str;
+        }
+
+        public static void LoopFolder(string pathName, Action<FileInfo> fileRule)
+        {
+            if (string.IsNullOrEmpty(pathName))
+            {
+                throw new ArgumentNullException(pathName);
+            }
+            try
+            {
+                DirectorySecurity security = new DirectorySecurity(pathName, AccessControlSections.Access);
+                if (!security.AreAccessRulesProtected)
+                {
+                    DirectoryInfo info = new DirectoryInfo(pathName);
+                    foreach (FileInfo info2 in info.GetFiles())
+                    {
+                        fileRule(info2);
+                    }
+                }
+            }
+            catch
+            {
+            }
         }
     }
 }

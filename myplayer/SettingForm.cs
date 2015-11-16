@@ -1,4 +1,5 @@
-﻿using System;
+﻿using myplayer.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,7 +18,7 @@ namespace myplayer
             InitializeComponent();
         }
 
-        SolidBrush sb = new SolidBrush(Color.FromArgb(32, 60, 67));
+        SolidBrush sb = new SolidBrush(Color.LightCoral);
         protected override void OnPaint(PaintEventArgs e)
         {
             //设置高质量插值法
@@ -31,6 +32,7 @@ namespace myplayer
 
         private void SettingForm_Load(object sender, EventArgs e)
         {
+            textBox1.Text = Settings.Default.picDir;
 
         }
 
@@ -39,9 +41,15 @@ namespace myplayer
             Close();
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
 
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                this.textBox1.Text = dialog.SelectedPath;
+                Settings.Default.picDir = dialog.SelectedPath;
+            }
         }
     }
 }

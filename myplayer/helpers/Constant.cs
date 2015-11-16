@@ -13,7 +13,8 @@ namespace myplayer.helpers
             LEFT_CLICK = 0x201,
             LEFT_CLICK_OUT = 0x202,
             MOVE = 0x200,
-            RIGHT_CLICK_OUT = 0x205
+            RIGHT_CLICK_OUT = 0x205,
+            RIGHT_CLICK_IN = 0x204
         }
 
         public enum PLAY_STATE

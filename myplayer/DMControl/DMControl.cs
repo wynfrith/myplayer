@@ -45,6 +45,8 @@ namespace DMPlay
         }
         public event EventHandler ItemClick;
 
+        public event EventHandler rightItemClick;
+
         protected override void DrawItem(Graphics g, DMSkin.Controls.DMControlItem _item, Rectangle rectItem)
         {
             if (Items!=null&&Items.Count <= 0)
@@ -53,39 +55,48 @@ namespace DMPlay
             }
             g.InterpolationMode = InterpolationMode.Bilinear;
             g.SmoothingMode = SmoothingMode.HighQuality;
-            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+           // g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            // g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+            g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+            ///////////////////////设置样式
             int padding = 5;
-            int left = 20;
+            int left = 5;
+            Color itemBgColor = Color.FromArgb(235, 235,235); //每一条默认的背景色
+            Color mouseBackColor = Color.FromArgb(210,210,210);  //鼠标移入背景色
+            Color lineColor = Color.FromArgb(230,230,230);
+            Color itemForeColor = Color.FromArgb(120, 120, 120);
+            Color playingColor = Color.FromArgb(32, 191, 99); //字体颜色
+            Font font= new Font("微软雅黑", 10);
             /// 列表 
             if (_item is Item)
             {
                 Item it = (Item)_item;
                 if (m_mouseOnItem!=null&&m_mouseOnItem.Equals(it)&&it.MouseBackColor!=null)
                 {
-                    g.FillRectangle(new SolidBrush(it.MouseBackColor),new Rectangle(it.Bounds.Location,new Size(Width,it.Bounds.Height)));
+                    g.FillRectangle(new SolidBrush(mouseBackColor),new Rectangle(it.Bounds.Location,new Size(Width,it.Bounds.Height)));
                     if (it.OnLine)
                     {
-                        g.DrawString(it.Text + "(" + it.Url + ")", it.Font, new SolidBrush(it.ForeColor), left, it.Bounds.Y + padding);
+                        g.DrawString(it.Text + "(" + it.Url + ")", font, new SolidBrush(playingColor), left, it.Bounds.Y + padding);
                     }
                     else
                     {
-                        g.DrawString(it.Text, it.Font, new SolidBrush(it.ForeColor), left, it.Bounds.Y + padding);
+                        g.DrawString(it.Text, font, new SolidBrush(itemForeColor), left, it.Bounds.Y + padding);
                     }
                 }
                 else
                 {
-                    g.FillRectangle(new SolidBrush(Color.White), new Rectangle(it.Bounds.Location, new Size(Width, it.Bounds.Height)));
+                    g.FillRectangle(new SolidBrush(itemBgColor), new Rectangle(it.Bounds.Location, new Size(Width, it.Bounds.Height)));
                     if (it.OnLine)
                     {
-                        g.DrawString(it.Text + "(" + it.Url + ")", it.Font, new SolidBrush(it.ForeColor), left, it.Bounds.Y + padding);
+                        g.DrawString(it.Text + "(" + it.Url + ")", font, new SolidBrush(playingColor), left, it.Bounds.Y + padding);
                     }
                     else
                     {
-                        g.DrawString(it.Text, it.Font, new SolidBrush(it.ForeColor), left, it.Bounds.Y + padding);
+                        g.DrawString(it.Text, font, new SolidBrush(itemForeColor), left, it.Bounds.Y + padding);
                     }
                 }
-                g.DrawLine(new Pen(Color.FromArgb(236,236,236)), it.Bounds.X+2, it.Bounds.Y,Width, it.Bounds.Y);
-                g.DrawLine(new Pen(Color.FromArgb(236, 236, 236)), it.Bounds.X+2, it.Bounds.Y + it.Bounds.Height,Width, it.Bounds.Y + it.Bounds.Height);
+                g.DrawLine(new Pen(lineColor), it.Bounds.X+2, it.Bounds.Y,Width, it.Bounds.Y);
+                g.DrawLine(new Pen(lineColor), it.Bounds.X+2, it.Bounds.Y + it.Bounds.Height,Width, it.Bounds.Y + it.Bounds.Height);
             }
 
             else
@@ -173,20 +184,16 @@ namespace DMPlay
         {
             foreach (var item in Items)
             {
-                if (item is PluginItem)
+                if (item is Item)
                 {
-                    PluginItem it = (PluginItem)item;
+                    Item it = (Item)item;
                     if (it.Bounds.Contains(m_ptMousePos))
                     {
-                        if (new Rectangle(it.Bounds.X + Width - 80, it.Bounds.Y + 30, 45, 28).Contains(m_ptMousePos))//播放按钮区域
+                        if (rightItemClick != null)
                         {
-                            if (ItemClick != null)
-                            {
-                                ItemClick(it, e);
-                            }
-                            break;
+                            rightItemClick(it, e);
                         }
-                        
+                        break;
                     }
                 }
             }  
