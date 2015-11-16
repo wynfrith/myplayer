@@ -6,13 +6,9 @@ using myplayer.Properties;
 using myplayer.service;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -20,7 +16,6 @@ namespace myplayer
 {
     public partial class PlayerForm :DMSkin.Main
     {
-        //作死
         SettingForm s; //设置
         Snapshot snapForm; //多张截图窗体
 
@@ -47,7 +42,6 @@ namespace myplayer
         public bool manualOperation = false; //是否是手动移动进度条， 判断ab循环用
         public int defaultLoopPlay;
         private bool twoPlay = false; //是否是分镜播放
-        private bool mirrorPlay = false; //镜面
 
         public PlayerForm()
         {
@@ -59,14 +53,13 @@ namespace myplayer
             this.player.Focus();
         }
 
-
-        //Color.FromArgb(32, 60, 67
-        SolidBrush sb = new SolidBrush(Color.FromArgb(32, 191, 99));
+        /// <summary>
+        /// 重新绘制窗体
+        /// </summary>
+        SolidBrush sb = new SolidBrush(Color.LightCoral);
         protected override void OnPaint(PaintEventArgs e)
         {
-            //设置高质量插值法
             e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
-            //设置高质量,低速度呈现平滑程度
             e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
             e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
             e.Graphics.FillRectangle(sb, -1, -1, Width + 30, Height + 30);
@@ -74,7 +67,7 @@ namespace myplayer
 
 
         /// <summary>
-        /// 重绘列表
+        /// 重绘播放列表
         /// </summary>
         public void InitPlayListView(VideoItem playingItem)
         {
@@ -115,10 +108,27 @@ namespace myplayer
         }
 
 
+        /// <summary>
+        /// 初始化主窗体
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form1_Load(object sender, EventArgs e)
         {
-            // this.player.SetCustomLogo(-1);
-           
+            try
+            {
+                Image img = Image.FromFile(@"dance.jpg");
+                Bitmap bmp = new Bitmap(img, 200, 300);
+                Console.WriteLine(bmp);
+                IntPtr pic = bmp.GetHbitmap();
+                this.player.SetCustomLogo((int)pic);
+            }
+            catch
+            {
+                this.player.SetCustomLogo(-1);
+            }
+          
+
             this.volume = Settings.Default.volume;
             if (Settings.Default.picDir == "" || Settings.Default.picDir == null)
             {
@@ -126,18 +136,23 @@ namespace myplayer
             }
             UpdateVol();
 
-            //VideoItem item = new VideoItem("hello.mkv", @"C:\迅雷下载\hello.mkv");
-            //videoList.Add(item);
             InitPlayListView(null);
             this.player.SetConfig(119, "1");
             this.vicePlayer.SetConfig(119, "1");
             this.vicePanel.Width = 0; //默认不显示
             this.player.Focus();
+
         }
 
         private void dmControl1_Click(object sender, EventArgs e)
         {
         }
+
+        /// <summary>
+        /// 关闭程序
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
 
         private void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -172,15 +187,20 @@ namespace myplayer
         {
             //播放列表的显示和隐藏
             Console.WriteLine(rightPanel.Visible);
-            if (rightPanel.Visible)
+            if (!this.Full)
             {
-                rightPanel.Hide();
-                player.Dock = DockStyle.Fill;
+                if (rightPanel.Visible)
+                {
+                    rightPanel.Hide();
+                    player.Dock = DockStyle.Fill;
+                }
+                else
+                {
+                    rightPanel.Show();
+                }
+
             }
-            else
-            {
-                rightPanel.Show();
-            }
+           
         }
         private void vicePlayer_OnMessage(object sender, AxAPlayer3Lib._IPlayerEvents_OnMessageEvent e)
         {
@@ -239,7 +259,11 @@ namespace myplayer
                 this.player.Pause();
                 if (this.twoPlay)  //副播放器
                 {
-                    this.vicePlayer.Pause();
+                    Thread _td = new Thread(new ThreadStart(() => {
+                        DeterMineCall(() => { this.vicePlayer.Pause(); });
+                    }));
+                    _td.Start();
+                    
                 }
                 this.Btnplay.DM_Key = DMSkin.Controls.DMLabelKey.播放;
                
@@ -260,7 +284,12 @@ namespace myplayer
         }
 
 
-        //计时器 控制进度条和一些状态
+        /// <summary>
+        /// 主计时器 (核心方法) 
+        /// 每50ms自动根据播放器的状态来控制播放器的动作和重绘视图
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void time_Tick(Object sender, EventArgs e)
         {
             Constant.PLAY_STATE state = (Constant.PLAY_STATE)this.player.GetState();
@@ -273,7 +302,12 @@ namespace myplayer
                     this.player.SetPosition(this.LoopStart);
                     if(this.twoPlay)
                     {
-                        this.vicePlayer.SetPosition(this.LoopStart);
+                        Thread _td = new Thread(new ThreadStart(() => {
+                            DeterMineCall(() => { this.vicePlayer.SetPosition(this.LoopStart); });
+                        }));
+                        _td.Start();
+
+                        
                     }
                 }
                 if (this.player.GetPosition() < this.LoopStart)
@@ -281,7 +315,10 @@ namespace myplayer
                     this.player.SetPosition(this.LoopStart);
                     if (this.twoPlay)
                     {
-                        this.vicePlayer.SetPosition(this.LoopStart);
+                        Thread _td = new Thread(new ThreadStart(() => {
+                            DeterMineCall(() => { this.vicePlayer.SetPosition(this.LoopStart); });
+                        }));
+                        _td.Start();
                     }
                 }
             }
@@ -353,7 +390,9 @@ namespace myplayer
             Console.WriteLine("vice:" + this.vicePanel.Width);
         }
 
-
+        /// <summary>
+        /// 更新音量
+        /// </summary>
         public void UpdateVol()
         {
             this.player.SetVolume(this.volume);
@@ -375,6 +414,11 @@ namespace myplayer
                 volLbl.DM_Key = DMSkin.Controls.DMLabelKey.音量_大;
             }
         }
+
+
+        /// <summary>
+        /// 全屏操作
+        /// </summary>
         private Rectangle nor2;
         public void FullScreen()
         {
@@ -430,6 +474,11 @@ namespace myplayer
             this.player.Focus();
         }
 
+        /// <summary>
+        /// 点击进度条, 根据当前光标位置计算进度条的百分比, 修改播放进度
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dmProgressBar_Click(object sender, EventArgs e)
         {
             var leftSpace = 10;
@@ -452,7 +501,11 @@ namespace myplayer
                 this.player.SetPosition(pos);
                 if (this.twoPlay)  //副播放器
                 {
-                    this.vicePlayer.SetPosition(pos);
+                    
+                    Thread _td = new Thread(new ThreadStart(() => {
+                        DeterMineCall(() => { this.vicePlayer.SetPosition(pos);  });
+                    }));
+                    _td.Start();
                 }
                 //AB区间做判断
                 if (this.player.GetPosition() > this.LoopEnd && this.bLbl.Visible == true)
@@ -506,7 +559,11 @@ namespace myplayer
                         this.player.SetPosition(Convert.ToInt32(num2));
                         if (this.twoPlay)
                         {
-                            this.vicePlayer.SetPosition(Convert.ToInt32(num2));
+                            Thread _td = new Thread(new ThreadStart(() => {
+                                DeterMineCall(() => { this.vicePlayer.SetPosition(Convert.ToInt32(num2)); });
+                            }));
+                            _td.Start();
+                            
                         }
                         if(this.player.GetPosition() > this.LoopEnd && this.bLbl.Visible == true)
                         {
@@ -573,7 +630,7 @@ namespace myplayer
         private void btns_MouseEnter(object sender, EventArgs e)
         {
             DMLabel label = (DMLabel)sender;
-            label.DM_Color = Color.FromArgb(240, 230, 140);
+            label.DM_Color = Color.LightPink;
         }
 
         private void btns_MouseLeave(object sender, EventArgs e)
@@ -922,7 +979,17 @@ namespace myplayer
 
         private void speedLbl_Click(object sender, EventArgs e)
         {
-
+            if (speed01.Visible)
+            {
+                speed01.Hide();
+                speed02.Hide();
+                speed03.Hide();
+            }else
+            {
+                speed01.Show();
+                speed02.Show();
+                speed03.Show();
+            }
         }
 
         private void speedBar_MouseMove(object sender, MouseEventArgs e)
@@ -935,7 +1002,11 @@ namespace myplayer
                     this.player.SetConfig(0x68, "25");
                     if (this.twoPlay)
                     {
-                        this.vicePlayer.SetConfig(0x68, "25");
+                        Thread _td = new Thread(new ThreadStart(() => {
+                            DeterMineCall(() => { this.vicePlayer.SetConfig(0x68, "25"); });
+                        }));
+                        _td.Start();
+                        
                     }
                     this.speedLbl.Text = "0.25倍";
                 }
@@ -944,7 +1015,11 @@ namespace myplayer
                     this.player.SetConfig(0x68, "100");
                     if (this.twoPlay)
                     {
-                        this.vicePlayer.SetConfig(0x68, "100");
+                        Thread _td = new Thread(new ThreadStart(() => {
+                            DeterMineCall(() => { this.vicePlayer.SetConfig(0x68, "100"); });
+                        }));
+                        _td.Start();
+                       
                     }
                     this.speedLbl.Text = "常速";
                 }
@@ -953,7 +1028,11 @@ namespace myplayer
                     this.player.SetConfig(0x68, "150");
                     if (this.twoPlay)
                     {
-                        this.vicePlayer.SetConfig(0x68, "25");
+                        Thread _td = new Thread(new ThreadStart(() => {
+                            DeterMineCall(() => { this.vicePlayer.SetConfig(0x68, "150"); });
+                        }));
+                        _td.Start();
+                       
                     }
                     this.speedLbl.Text = "1.5倍";
                 }
@@ -1220,7 +1299,11 @@ namespace myplayer
                 this.player.SetPosition(pos);
                 if (this.twoPlay)
                 {
-                    this.vicePlayer.SetPosition(pos);
+                    Thread _td = new Thread(new ThreadStart(() => {
+                        DeterMineCall(() => { this.vicePlayer.SetPosition(pos); });
+                    }));
+                    _td.Start();
+                    
                 }
                 var value = (int)((pos * 1.0 / this.duration) * 100);
                 this.dmProgressBar.DM_Value = value;
@@ -1258,7 +1341,11 @@ namespace myplayer
                 this.player.SetPosition(pos);
                 if (this.twoPlay)
                 {
-                    this.vicePlayer.SetPosition(pos);
+                    Thread _td = new Thread(new ThreadStart(() => {
+                        DeterMineCall(() => { this.vicePlayer.SetPosition(pos); });
+                    }));
+                    _td.Start();
+                    
                 }
                 Console.WriteLine("pos:" + pos);
                 Console.WriteLine("dur:" + this.duration);
@@ -1303,7 +1390,12 @@ namespace myplayer
             this.player.SetConfig(104, "100");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, "100");
+                
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "100"); });
+                }));
+                _td.Start();
+
             }
 
         }
@@ -1321,10 +1413,17 @@ namespace myplayer
             this.player.SetConfig(612, "播放速度 (" + (per == 1.0 ? "正常" : per + "倍") + ")");
             this.speedLbl.Text = (per == 1.0 ? "常速" : per + "倍速");
             ClearTip.Clear(player, 1000);
+            if(per> 1.5)
+            {
+            }
             this.player.SetConfig(104, (speed + 10) + "");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, (speed + 10) + "");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, (speed + 10) + ""); });
+                }));
+                _td.Start();
+               
             }
             
 
@@ -1343,10 +1442,18 @@ namespace myplayer
             this.player.SetConfig(612, "播放速度 (" + (per == 1.0 ? "正常" : per + "倍") + ")");
             this.speedLbl.Text = (per == 1.0 ? "常速" : per + "倍速");
             ClearTip.Clear(player, 1000);
+            if(per < 0.7)
+            {
+            }
             this.player.SetConfig(104, (speed - 10) + "");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, (speed - 10) + "");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, (speed - 10) + ""); });
+                }));
+                _td.Start();
+
+              
             }
 
         }
@@ -1362,7 +1469,43 @@ namespace myplayer
             this.player.SetConfig(104, "10");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, "10");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "10"); });
+                }));
+                _td.Start();
+               
+            }
+            if (speed01.Visible)
+            {
+                speed01.Hide();
+                speed02.Hide();
+                speed03.Hide();
+            }
+
+
+        }
+
+        private void 倍ToolStripMenuItem02_Click(object sender, EventArgs e)
+        {
+            //0.2
+            this.player.SetConfig(602, "1");
+            this.player.SetConfig(621, "1");
+            this.player.SetConfig(612, "播放速度 (0.2倍速)");
+            this.speedLbl.Text = "0.2倍速";
+            ClearTip.Clear(player, 1000);
+            this.player.SetConfig(104, "20");
+            if (this.twoPlay)
+            {
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "20"); });
+                }));
+                _td.Start();
+            }
+            if (speed01.Visible)
+            {
+                speed01.Hide();
+                speed02.Hide();
+                speed03.Hide();
             }
 
         }
@@ -1377,7 +1520,16 @@ namespace myplayer
             this.player.SetConfig(104, "50");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, "50");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "50"); });
+                }));
+                _td.Start();
+            }
+            if (speed01.Visible)
+            {
+                speed01.Hide();
+                speed02.Hide();
+                speed03.Hide();
             }
         }
 
@@ -1391,7 +1543,10 @@ namespace myplayer
             this.player.SetConfig(104, "150");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, "150");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "150"); });
+                }));
+                _td.Start();
             }
 
         }
@@ -1406,9 +1561,11 @@ namespace myplayer
             this.player.SetConfig(104, "200");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, "200");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "200"); });
+                }));
+                _td.Start();
             }
-
         }
 
         private void 倍ToolStripMenuItem4_Click(object sender, EventArgs e)
@@ -1421,7 +1578,10 @@ namespace myplayer
             this.player.SetConfig(104, "300");
             if (this.twoPlay)
             {
-                this.vicePlayer.SetConfig(104, "300");
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.vicePlayer.SetConfig(104, "300"); });
+                }));
+                _td.Start();
             }
 
         }
@@ -1463,13 +1623,25 @@ namespace myplayer
                 this.vicePlayer.SetConfig(0x12e, "1");
                 this.player.SetPosition((int)this.position);
                 this.vicePlayer.SetPosition((int)this.position);
-                this.vicePlayer.Play();
-                this.player.Play(); //漂亮!! 完全同步
+                Thread _td = new Thread(new ThreadStart(() => {
+                    DeterMineCall(() => { this.player.Play(); Console.WriteLine("playing"); });
+                }));
+                _td.Start();
+
                 this.twoPlay = true;
                 this.twoPlayTimer.Enabled = false;
                 this.player.Focus();
                 Console.WriteLine("ok");
             }
+        }
+        public void updatetxt()
+        {
+
+        }
+
+        public void SetPlay()
+        {
+            this.vicePlayer.Play();
         }
 
         private void playerPanel_Resize(object sender, EventArgs e)
@@ -1490,8 +1662,8 @@ namespace myplayer
             this.player.SetConfig(0x12e, "0");
 
             this.mBtn2.ForeColor = Color.MediumSeaGreen;
-            this.mBtn1.ForeColor = Color.DimGray;
-            this.mBtn3.ForeColor = Color.DimGray;
+            this.mBtn1.ForeColor = Color.DarkGray;
+            this.mBtn3.ForeColor = Color.DarkGray;
         }
 
         private void mirrorPanel_MouseLeave(object sender, EventArgs e)
@@ -1507,10 +1679,11 @@ namespace myplayer
         private void mBtn1_Click(object sender, EventArgs e)
         {
             this.mBtn1.ForeColor = Color.MediumSeaGreen;
-            this.mBtn2.ForeColor = Color.DimGray;
-            this.mBtn3.ForeColor = Color.DimGray;
+            this.mBtn2.ForeColor = Color.DarkGray;
+            this.mBtn3.ForeColor = Color.DarkGray;
             //分镜
 
+            this.player.SetConfig(0x12e, "0");
             this.player.SetConfig(602, "1");
             this.player.SetConfig(621, "1");
             this.player.SetConfig(612, "视频状态 (分镜)");
@@ -1522,8 +1695,8 @@ namespace myplayer
         private void mBtn2_Click(object sender, EventArgs e)
         {
             this.mBtn2.ForeColor = Color.MediumSeaGreen;
-            this.mBtn1.ForeColor = Color.DimGray;
-            this.mBtn3.ForeColor = Color.DimGray;
+            this.mBtn1.ForeColor = Color.DarkGray;
+            this.mBtn3.ForeColor = Color.DarkGray;
 
             this.player.SetConfig(602, "1");
             this.player.SetConfig(621, "1");
@@ -1539,8 +1712,8 @@ namespace myplayer
         private void mBtn3_Click(object sender, EventArgs e)
         {
             this.mBtn3.ForeColor = Color.MediumSeaGreen;
-            this.mBtn1.ForeColor = Color.DimGray;
-            this.mBtn2.ForeColor = Color.DimGray;
+            this.mBtn1.ForeColor = Color.DarkGray;
+            this.mBtn2.ForeColor = Color.DarkGray;
 
             this.player.SetConfig(602, "1");
             this.player.SetConfig(621, "1");
@@ -1554,5 +1727,55 @@ namespace myplayer
 
         }
 
+        private void button1_Click_3(object sender, EventArgs e)
+        {
+            this.player.SetConfig(707, "4");
+            this.player.SetConfig(703, "320");
+            this.player.SetConfig(704, "240");
+            this.player.SetConfig(709, "length=2000;cutinterval=200;playinterval=100");
+            this.player.SetConfig(702,@"D:\test.gif");
+            var isWorking = this.player.GetConfig(711);
+            Console.WriteLine("是否截图:"+isWorking);
+            Console.WriteLine("百分比" + this.player.GetConfig(712));
+        }
+
+        private void player_OnEvent(object sender, AxAPlayer3Lib._IPlayerEvents_OnEventEvent e)
+        {
+            Console.WriteLine(e);
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            var isWorking = this.player.GetConfig(711);
+            Console.WriteLine("是否截图:" + isWorking);
+            Console.WriteLine("百分比" + this.player.GetConfig(712));
+        }
+
+        private void menuPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void DeterMineCall(MethodInvoker method)
+        {
+            if (InvokeRequired)
+                Invoke(method);
+            else
+                method();
+        }
+       
+   
+
+
+        private void PlayerForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Settings.Default.volume = this.volume;
+            Settings.Default.Save();
+            if (this.timer.Enabled)
+            {
+                this.timer.Enabled = false;
+            }
+
+        }
     }
 }
